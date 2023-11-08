@@ -1,3 +1,23 @@
+set(OS_NAME "unknown")
+set(OS_ARCH "amd64")
+
+string(REGEX MATCH "(arm64|aarch64)" IS_ARM "${CMAKE_SYSTEM_PROCESSOR}")
+if(IS_ARM)
+    set(OS_ARCH "arm64")
+elseif(FORCE_32_BIT)
+    set(OS_ARCH "i386")
+endif()
+
+if(APPLE)
+    set(OS_NAME "osx")
+endif()
+if(WIN32)
+    set(OS_NAME "windows")
+endif()
+if(UNIX AND NOT APPLE)
+    set(OS_NAME "linux") # sorry BSD
+endif()
+
 IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     SET(OS_LINUX true CACHE INTERNAL "Linux operating system")
 ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Darwin")

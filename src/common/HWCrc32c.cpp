@@ -79,24 +79,24 @@ namespace Hdfs {
 #if defined(__LP64__)
 
         static inline uint64_t _mm_crc32_u64(uint64_t crc, uint64_t value) {
-            asm("crc32cx %[value], %[crc]\n" : [crc] "+r"(crc) : [value] "rm"(value));
+            asm("crc32cx %w[c], %w[c], %x[v]":[c]"+r"(crc):[v]"r"(value));
             return crc;
         }
 
 #endif
 
         static inline uint32_t _mm_crc32_u32(uint32_t crc, uint32_t value) {
-            asm("crc32cw %[value], %[crc]\n" : [crc] "+r"(crc) : [value] "rm"(value));
+            asm("crc32cw %w[c], %w[c], %w[v]":[c]"+r"(crc):[v]"r"(value));
             return crc;
         }
 
         static inline uint32_t _mm_crc32_u16(uint32_t crc, uint16_t value) {
-            asm("crc32ch %[value], %[crc]\n" : [crc] "+r"(crc) : [value] "rm"(value));
+            asm("crc32ch %w[c], %w[c], %w[v]":[c]"+r"(crc):[v]"r"(value));
             return crc;
         }
 
         static inline uint32_t _mm_crc32_u8(uint32_t crc, uint8_t value) {
-            asm("crc32cb %[value], %[crc]\n" : [crc] "+r"(crc) : [value] "rm"(value));
+            asm("crc32cb %w[c], %w[c], %w[v]":[c]"+r"(crc):[v]"r"(value));
             return crc;
         }
 

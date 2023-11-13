@@ -40,10 +40,6 @@ jobs:
    container: ubuntu:18.04
 
    steps:
-     - uses: actions/checkout@v3
-       with:
-         fetch-depth: 0
-
      - uses: ./.github/actions/ubuntu_18_setup
        with:
         aarch64_cross_compile: 1
@@ -51,9 +47,14 @@ jobs:
         openssl: 1
         protobuf: 1
 
+     - uses: actions/checkout@v3
+         with:
+           fetch-depth: 0
+
      - name: Build
        shell: bash
        run: |
+         cd libhdfs3
          CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ make
          CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ make install
 

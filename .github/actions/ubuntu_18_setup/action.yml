@@ -48,6 +48,7 @@ runs:
         ./config --prefix=/usr
         make
         make install
+        cd ..
 
     - name: Install Git 2.18.5
       shell: bash
@@ -58,6 +59,7 @@ runs:
         make
         make prefix=/usr install
         git --version
+        cd ..
 
     - uses: actions/checkout@v3
       with:
@@ -85,6 +87,7 @@ runs:
         python3.8 --version
         python3.8 -m pip install pip
         python3.8 -m pip install requests awscli
+        cd ..
 
     - name: Version Check
       shell: bash
@@ -118,3 +121,4 @@ runs:
         ./configure --prefix=/usr
         make
         make install
+        cd ..

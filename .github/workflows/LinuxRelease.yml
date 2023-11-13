@@ -38,7 +38,6 @@ jobs:
    if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main' || github.repository != 'duckdb/duckdb'
    runs-on: ubuntu-latest
    container: ubuntu:18.04
-   env:
 
    steps:
      - uses: actions/checkout@v3

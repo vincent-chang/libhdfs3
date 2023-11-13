@@ -12,7 +12,7 @@ inputs:
     default: 0
   vcpkg:
     description: 'Install vcpkg'
-    default: 1
+    default: 0
   openssl:
     description: 'OpenSSL'
     default: 1
@@ -106,8 +106,6 @@ runs:
       with:
         key: ${{ github.job }}
         save: ${{ github.ref == 'refs/heads/main' || github.repository != 'vincent-chang/libhdfs3' }}
-
-
 
     - name: Install Protobuf 3.0.0
       if: ${{ inputs.protobuf == 1 }}

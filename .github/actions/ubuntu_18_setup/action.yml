@@ -94,6 +94,10 @@ runs:
         make
         make install
 
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
     - name: Version Check
       shell: bash
       run: |
@@ -101,10 +105,6 @@ runs:
         python3 --version
         git --version
         git log -1 --format=%h
-
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
 
     - name: Setup vcpkg
       if: ${{ inputs.vcpkg == 1 }}

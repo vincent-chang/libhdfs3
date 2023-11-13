@@ -48,8 +48,17 @@ jobs:
         shell: bash
         run: |
           mkdir build
-          ls -l
-          echo ${pwd}
+          cd build
+          ../bootstrap
+          make
+          make install
+          mv dist ./libhdfs3
+          tar -czvf libhdfs3.Linux_x86_64.tar.gz libhdfs3
+      - uses: actions/upload-artifact@v3
+        with:
+          name: libhdfs3.Linux_x86_64.tar.gz
+          path: |
+            libhdfs3.Linux_x86_64.tar.gz
 
   linux-release-aarch64:
     runs-on: ubuntu-latest
@@ -85,7 +94,7 @@ jobs:
             apt-get install -y -qq software-properties-common
             add-apt-repository ppa:git-core/ppa
             apt-get update -y -qq
-            apt-get install -y -qq make gcc g++ automake autoconf wget curl zip libssl-dev unzip libcurl4-gnutls-dev libexpat1-dev gettext build-essential checkinstall libffi-dev libxml2-dev uuid-dev libgtest-dev libkrb5-dev libgsasl7-dev libboost-all-dev
+            apt-get install -y -qq make cmake gcc g++ automake autoconf wget curl zip libssl-dev unzip libcurl4-gnutls-dev libexpat1-dev gettext build-essential checkinstall libffi-dev libxml2-dev uuid-dev libgtest-dev libkrb5-dev libgsasl7-dev libboost-all-dev
             cd /opt
             wget https://github.com/git/git/archive/refs/tags/v2.18.5.tar.gz
             tar -xzvf v2.18.5.tar.gz
@@ -114,7 +123,7 @@ jobs:
             mkdir -p libhdfs3-src/build
             cd libhdfs3-src/build
             ../bootstrap
-            make -j$(nproc)
+            make
             make install
             cd /build
             mv libhdfs3-src/dist ./libhdfs3
@@ -124,4 +133,4 @@ jobs:
         with:
           name: libhdfs3.Linux_aarch64.tar.gz
           path: |
-            ${PWD}/build/libhdfs3.Linux_aarch64.tar.gz
+            "${PWD}/build/libhdfs3.Linux_aarch64.tar.gz"

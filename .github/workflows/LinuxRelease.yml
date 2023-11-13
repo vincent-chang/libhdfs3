@@ -100,6 +100,9 @@ jobs:
             cd /build
             mv libhdfs3-src/dist ./libhdfs3
             tar -czvf ${artifact_name} libhdfs3
-      - name: Show the artifact
-        run: |
-          ls -la "${PWD}/build"
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: libhdfs3.Linux_aarch64.tar.gz
+          path: |
+            ${PWD}/build/libhdfs3.Linux_aarch64.tar.gz

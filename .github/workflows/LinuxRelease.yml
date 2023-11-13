@@ -40,8 +40,6 @@ jobs:
    strategy:
      matrix:
        include:
-         - arch: x86_64
-           distro: ubuntu18.04
          - arch: aarch64
            distro: ubuntu18.04
 
@@ -69,6 +67,7 @@ jobs:
            add-apt-repository ppa:git-core/ppa
            apt-get update -y -qq
            apt-get install -y -qq make gcc g++ automake autoconf wget curl zip libssl-dev unzip libcurl4-gnutls-dev libexpat1-dev gettext build-essential checkinstall libffi-dev libxml2-dev uuid-dev libgtest-dev libkrb5-dev libgsasl7-dev libboost-all-dev
+         run: |
            cd /build
            wget https://github.com/git/git/archive/refs/tags/v2.18.5.tar.gz
            tar -xzvf v2.18.5.tar.gz

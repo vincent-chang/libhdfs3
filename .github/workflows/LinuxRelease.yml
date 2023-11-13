@@ -34,8 +34,8 @@ env:
 jobs:
  build_job:
    runs-on: ubuntu-latest
-   name: Build on $({ matrix.distro }} ${{ matrix.arch }}
-   if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main' || github.repository != 'duckdb/duckdb'
+   name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+   if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main' || github.repository != 'vincent-chang/libhdfs3'
 
    strategy:
      matrix:
@@ -55,14 +55,14 @@ jobs:
        id: build
        with:
          arch: ${{ matrix.arch }}
-         distro: $({ matrix.distro }}
+         distro: ${{ matrix.distro }}
          shell: /bin/bash
          setup: |
            mkdir -p "${PWD}/build"
          dockerRunArgs: |
            --volume "${PWD}/build:/build"
          env: |
-           artifact_name: libhdfs3.$({ matrix.distro }}_${{ matrix.arch }}
+           artifact_name: libhdfs3.${{ matrix.distro }}_${{ matrix.arch }}
          install: |
            apt-get update -y -qq
            apt-get install -y -qq software-properties-common

@@ -52,13 +52,13 @@ jobs:
           ../bootstrap
           make
           make install
-          mv dist ./libhdfs3
+          mv ../dist ./libhdfs3
           tar -czvf libhdfs3.Linux_x86_64.tar.gz libhdfs3
       - uses: actions/upload-artifact@v3
         with:
           name: libhdfs3.Linux_x86_64.tar.gz
           path: |
-            libhdfs3.Linux_x86_64.tar.gz
+            build/libhdfs3.Linux_x86_64.tar.gz
 
   linux-release-aarch64:
     runs-on: ubuntu-latest
@@ -86,7 +86,7 @@ jobs:
           setup: |
             mkdir -p "${PWD}/build"
           dockerRunArgs: |
-            --volume "${PWD}/build:/build"
+            --volume "${PWD}:/opt/libhdfs3-src"
           env: |
             artifact_name: libhdfs3.Linux_${{ matrix.arch }}.tar.gz
           install: |
@@ -118,15 +118,13 @@ jobs:
             make
             make install
           run: |
-            cd /build
-            git clone https://github.com/vincent-chang/libhdfs3.git libhdfs3-src
-            mkdir -p libhdfs3-src/build
+            cd /opt/libhdfs3-src
+            mkdir -p build
             cd libhdfs3-src/build
             ../bootstrap
             make
             make install
-            cd /build
-            mv libhdfs3-src/dist ./libhdfs3
+            mv ../dist ./libhdfs3
             tar -czvf ${artifact_name} libhdfs3
 
       - uses: actions/upload-artifact@v3

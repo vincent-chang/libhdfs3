@@ -30,13 +30,24 @@ runs:
         apt-get install -y -qq software-properties-common
         add-apt-repository ppa:git-core/ppa
         apt-get update -y -qq
-        apt-get install -y -qq ninja-build make gcc-multilib g++-multilib automake autoconf wget zip libc6-dev-i386 libssl-dev unzip build-essential checkinstall libxml2-dev uuid-dev libgtest-dev libkrb5-dev libgsasl7-dev libboost-all-dev
+        apt-get install -y -qq ninja-build make gcc-multilib g++-multilib automake autoconf wget zip libc6-dev-i386 libssl-dev unzip libcurl4-gnutls-dev libexpat1-dev gettext build-essential checkinstall libxml2-dev uuid-dev libgtest-dev libkrb5-dev libgsasl7-dev libboost-all-dev
 
     - name: Install
       shell: bash
       if: ${{ inputs.aarch64_cross_compile == 1 }}
       run: |
         apt-get install -y -qq gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+    - name: Install OpenSSL 1.1.1
+      if: ${{ inputs.openssl == 1 }}
+      shell: bash
+      run: |
+        wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+        tar -xzvf openssl-1.1.1w.tar.gz
+        cd /opt/openssl-1.1.1w
+        ./config --prefix=/usr
+        make
+        make install
 
     - name: Install Git 2.18.5
       shell: bash
@@ -96,16 +107,7 @@ runs:
         key: ${{ github.job }}
         save: ${{ github.ref == 'refs/heads/main' || github.repository != 'vincent-chang/libhdfs3' }}
 
-    - name: Install OpenSSL 1.1.1
-      if: ${{ inputs.openssl == 1 }}
-      shell: bash
-      run: |
-        wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
-        tar -xzvf openssl-1.1.1w.tar.gz
-        cd /opt/openssl-1.1.1w
-        ./config --prefix=/usr
-        make
-        make install
+
 
     - name: Install Protobuf 3.0.0
       if: ${{ inputs.protobuf == 1 }}

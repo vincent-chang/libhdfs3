@@ -44,7 +44,7 @@ runs:
       run: |
         wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
         tar -xzvf openssl-1.1.1w.tar.gz
-        cd /opt/openssl-1.1.1w
+        cd openssl-1.1.1w
         ./config --prefix=/usr
         make
         make install

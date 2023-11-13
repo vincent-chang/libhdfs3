@@ -42,28 +42,22 @@ runs:
       if: ${{ inputs.openssl == 1 }}
       shell: bash
       run: |
-        wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+        wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz 
         tar -xzvf openssl-1.1.1w.tar.gz
         cd openssl-1.1.1w
         ./config --prefix=/usr
         make
         make install
-        cd ..
 
     - name: Install Git 2.18.5
       shell: bash
       run: |
         wget https://github.com/git/git/archive/refs/tags/v2.18.5.tar.gz
-        tar xvf v2.18.5.tar.gz
+        tar -xzvf v2.18.5.tar.gz
         cd git-2.18.5
         make
         make prefix=/usr install
         git --version
-        cd ..
-
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
 
     - name: Install CMake 3.21
       shell: bash
@@ -87,7 +81,18 @@ runs:
         python3.8 --version
         python3.8 -m pip install pip
         python3.8 -m pip install requests awscli
-        cd ..
+
+    - name: Install Protobuf 3.0.0
+      if: ${{ inputs.protobuf == 1 }}
+      shell: bash
+      run: |
+        wget https://github.com/vincent-chang/protobuf/archive/refs/tags/v3.0.0-autogen-fix.tar.gz
+        tar -xzvf v3.0.0-autogen-fix.tar.gz
+        cd protobuf-3.0.0-autogen-fix
+        ./autogen.sh
+        ./configure --prefix=/usr
+        make
+        make install
 
     - name: Version Check
       shell: bash
@@ -96,6 +101,10 @@ runs:
         python3 --version
         git --version
         git log -1 --format=%h
+
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
     - name: Setup vcpkg
       if: ${{ inputs.vcpkg == 1 }}
@@ -110,15 +119,3 @@ runs:
         key: ${{ github.job }}
         save: ${{ github.ref == 'refs/heads/main' || github.repository != 'vincent-chang/libhdfs3' }}
 
-    - name: Install Protobuf 3.0.0
-      if: ${{ inputs.protobuf == 1 }}
-      shell: bash
-      run: |
-        wget https://github.com/vincent-chang/protobuf/archive/refs/tags/v3.0.0-autogen-fix.tar.gz
-        tar -xzvf v3.0.0-autogen-fix.tar.gz
-        cd protobuf-3.0.0-autogen-fix
-        ./autogen.sh
-        ./configure --prefix=/usr
-        make
-        make install
-        cd ..

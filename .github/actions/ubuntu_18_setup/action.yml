@@ -30,7 +30,7 @@ runs:
         apt-get install -y -qq software-properties-common
         add-apt-repository ppa:git-core/ppa
         apt-get update -y -qq
-        apt-get install -y -qq ninja-build make gcc-multilib g++-multilib automake autoconf wget zip libc6-dev-i386 libssl-dev unzip libcurl4-gnutls-dev libexpat1-dev gettext build-essential checkinstall libffi-dev libxml2-dev uuid-dev libgtest-dev libkrb5-dev libgsasl7-dev libboost-all-dev
+        apt-get install -y -qq ninja-build make gcc-multilib g++-multilib automake autoconf wget curl zip libc6-dev-i386 libssl-dev unzip libcurl4-gnutls-dev libexpat1-dev gettext build-essential checkinstall libffi-dev libxml2-dev uuid-dev libgtest-dev libkrb5-dev libgsasl7-dev libboost-all-dev
 
     - name: Install
       shell: bash

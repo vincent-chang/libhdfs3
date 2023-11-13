@@ -37,19 +37,19 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main' || github.repository != 'vincent-chang/libhdfs3'
     runs-on: ubuntu-latest
     container: ubuntu:18.04
-  steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-    - uses: ./.github/actions/ubuntu_18_setup
-      with:
-        ccache: 1
-    - name: Build
-      shell: bash
-      run: |
-        mkdir build
-        ls -l
-        echo ${pwd}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/ubuntu_18_setup
+        with:
+          ccache: 1
+      - name: Build
+        shell: bash
+        run: |
+          mkdir build
+          ls -l
+          echo ${pwd}
 
   linux-release-aarch64:
     runs-on: ubuntu-latest

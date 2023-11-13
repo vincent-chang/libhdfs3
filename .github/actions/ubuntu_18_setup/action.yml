@@ -1,6 +1,9 @@
 name: "Setup Ubuntu 18"
 description: "Setup an Ubuntu 18 docker container with the required libraries"
 inputs:
+  python:
+    description: 'Python'
+    default: 1
   aarch64_cross_compile:
     description: 'Install dependencies for aarch64 cross-compiling'
     default: 1
@@ -27,7 +30,7 @@ runs:
         apt-get install -y -qq software-properties-common
         add-apt-repository ppa:git-core/ppa
         apt-get update -y -qq
-        apt-get install -y -qq ninja-build make gcc-multilib g++-multilib libssl-dev wget zip libc6-dev-i386 libssl-dev unzip build-essential checkinstall curl openssh-client pkg-config libxml2-dev uuid-dev libgtest-dev libkrb5-dev libgsasl7-dev libboost-all-dev
+        apt-get install -y -qq ninja-build make gcc-multilib g++-multilib automake autoconf wget zip libc6-dev-i386 libssl-dev unzip build-essential checkinstall libxml2-dev uuid-dev libgtest-dev libkrb5-dev libgsasl7-dev libboost-all-dev
 
     - name: Install
       shell: bash
@@ -57,6 +60,21 @@ runs:
         ./cmake-3.21.3-linux-x86_64.sh --skip-license --prefix=/usr/local
         cmake --version
 
+    - name: Install Python 3.8
+      if: ${{ inputs.python }} == 1
+      shell: bash
+      run: |
+        wget https://www.python.org/ftp/python/3.8.17/Python-3.8.17.tgz
+        tar xvf Python-3.8.17.tgz
+        cd Python-3.8.17
+        mkdir -p pythonbin
+        ./configure --with-ensurepip=install
+        make -j
+        make install
+        python3.8 --version
+        python3.8 -m pip install pip
+        python3.8 -m pip install requests awscli
+
     - name: Version Check
       shell: bash
       run: |
@@ -78,14 +96,25 @@ runs:
         key: ${{ github.job }}
         save: ${{ github.ref == 'refs/heads/main' || github.repository != 'vincent-chang/libhdfs3' }}
 
-    - name: Install OpenSSL through vcpkg
+    - name: Install OpenSSL 1.1.1
       if: ${{ inputs.openssl == 1 }}
       shell: bash
       run: |
-        cd $VCPKG_ROOT && ./vcpkg install openssl --triplet=${{ inputs.aarch64_cross_compile == 1 && 'arm64-linux' || 'x64-linux' }}
+        wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+        tar -xzvf openssl-1.1.1w.tar.gz
+        cd /opt/openssl-1.1.1w
+        ./config --prefix=/usr
+        make
+        make install
 
-    - name: Install Protobuf through vcpkg
+    - name: Install Protobuf 3.0.0
       if: ${{ inputs.protobuf == 1 }}
       shell: bash
       run: |
-        cd $VCPKG_ROOT && ./vcpkg install protobuf --triplet=${{ inputs.aarch64_cross_compile == 1 && 'arm64-linux' || 'x64-linux' }}
+        wget https://github.com/vincent-chang/protobuf/archive/refs/tags/v3.0.0-autogen-fix.tar.gz
+        tar -xzvf v3.0.0-autogen-fix.tar.gz
+        cd protobuf-3.0.0-autogen-fix
+        ./autogen.sh
+        ./configure --prefix=/usr
+        make
+        make install

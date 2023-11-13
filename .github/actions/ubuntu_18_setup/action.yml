@@ -3,10 +3,7 @@ description: "Setup an Ubuntu 18 docker container with the required libraries"
 inputs:
   python:
     description: 'Python'
-    default: 1
-  aarch64_cross_compile:
-    description: 'Install dependencies for aarch64 cross-compiling'
-    default: 1
+    default: 0
   ccache:
     description: 'Install ccache'
     default: 0
@@ -31,12 +28,6 @@ runs:
         add-apt-repository ppa:git-core/ppa
         apt-get update -y -qq
         apt-get install -y -qq make gcc g++ automake autoconf wget curl zip libssl-dev unzip libcurl4-gnutls-dev libexpat1-dev gettext build-essential checkinstall libffi-dev libxml2-dev uuid-dev libgtest-dev libkrb5-dev libgsasl7-dev libboost-all-dev
-
-    - name: Install
-      shell: bash
-      if: ${{ inputs.aarch64_cross_compile == 1 }}
-      run: |
-        apt-get install -y -qq gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
     - name: Install Git 2.18.5
       shell: bash

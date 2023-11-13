@@ -30,13 +30,23 @@ runs:
         apt-get install -y -qq software-properties-common
         add-apt-repository ppa:git-core/ppa
         apt-get update -y -qq
-        apt-get install -y -qq ninja-build make gcc-multilib g++-multilib automake autoconf wget curl zip libc6-dev-i386 libssl-dev unzip libcurl4-gnutls-dev libexpat1-dev gettext build-essential checkinstall libffi-dev libxml2-dev uuid-dev libgtest-dev libkrb5-dev libgsasl7-dev libboost-all-dev
+        apt-get install -y -qq make gcc g++ automake autoconf wget curl zip libssl-dev unzip libcurl4-gnutls-dev libexpat1-dev gettext build-essential checkinstall libffi-dev libxml2-dev uuid-dev libgtest-dev libkrb5-dev libgsasl7-dev libboost-all-dev
 
     - name: Install
       shell: bash
       if: ${{ inputs.aarch64_cross_compile == 1 }}
       run: |
         apt-get install -y -qq gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+    - name: Install Git 2.18.5
+      shell: bash
+      run: |
+        wget https://github.com/git/git/archive/refs/tags/v2.18.5.tar.gz
+        tar -xzvf v2.18.5.tar.gz
+        cd git-2.18.5
+        make
+        make prefix=/usr install
+        git --version
 
     - name: Install OpenSSL 1.1.1
       if: ${{ inputs.openssl == 1 }}
@@ -48,16 +58,6 @@ runs:
         ./config --prefix=/usr
         make
         make install
-
-    - name: Install Git 2.18.5
-      shell: bash
-      run: |
-        wget https://github.com/git/git/archive/refs/tags/v2.18.5.tar.gz
-        tar -xzvf v2.18.5.tar.gz
-        cd git-2.18.5
-        make
-        make prefix=/usr install
-        git --version
 
     - name: Install CMake 3.21
       shell: bash

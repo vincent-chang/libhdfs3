@@ -120,7 +120,7 @@ jobs:
           run: |
             cd /opt/libhdfs3-src
             mkdir -p build
-            cd libhdfs3-src/build
+            cd build
             ../bootstrap
             make
             make install

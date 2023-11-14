@@ -129,6 +129,6 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: libhdfs3.Linux_aarch64.tar.gz
+          name: libhdfs3.Linux_${{ matrix.arch }}.tar.gz
           path: |
-            "${PWD}/build/libhdfs3.Linux_aarch64.tar.gz"
+            build/libhdfs3.Linux_${{ matrix.arch }}.tar.gz
